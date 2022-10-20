@@ -1,13 +1,15 @@
+import datetime
 import json
 import os
 import time
 from hashlib import md5
-import sys
+
 import pytz
-import datetime
 import requests
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
+
+import MessagePush
 
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 
@@ -71,7 +73,7 @@ def save(userId: str, token: str, planId: str, country: str, province: str,
     }
     url = "https://api.moguding.net:9000/attendence/clock/v2/save"
     res = requests.post(url=url, headers=headers2, data=json.dumps(data))
-    return res.json()["code"] == 200
+    return res.json()["code"] == 200, res.json()["msg"]
 
 
 # 工学云加密算法
@@ -102,18 +104,19 @@ def getToken(user):
 
 
 if __name__ == '__main__':
-    hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
-    print(hourNow)
-    sys.exit()
     users = parseUserInfo()
     for user in users:
 
         userInfo = getToken(user)
+        phone = user["phone"]
+
         if userInfo["code"] != 200:
-            print(userInfo["msg"])
+            print(phone + ',打卡失败，错误原因:' + userInfo["msg"])
+            MessagePush.pushMessage(phone, phone + '工学云打卡失败！',
+                                    '用户：' + phone + ',' + '打卡失败！错误原因：' + userInfo["msg"],
+                                    user["pushKey"])
             continue
-        print('已登录：', user["phone"])
-        print(userInfo)
+        print('已登录：', phone)
 
         userId = userInfo["data"]["userId"]
         moguNo = userInfo["data"]["moguNo"]
@@ -121,14 +124,39 @@ if __name__ == '__main__':
 
         sign = getSign2(userId + 'student')
         planId = get_plan_id(token, sign)
-        print('-------------', user["phone"], ':准备签到--------------')
-        signResp = save(userId, token, planId,
+        hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+        signType = ''
+        if hourNow < 12:
+            signType = 'START'
+        else:
+            signType = 'END'
+        print('-------------', phone, ':准备签到--------------')
+        signResp, msg = save(userId, token, planId,
                         user["country"], user["province"], user["address"],
-                        signType='START', description='', device=user['type'],
+                        signType=signType, description='', device=user['type'],
                         latitude=user["latitude"], longitude=user["longitude"])
         if signResp:
-            print(user["phone"], ':签到成功')
+            print(phone, ':签到成功')
         else:
-            print(user["phone"], ':签到失败')
-        print('-------------', user["phone"], ':签到完成--------------')
+            print(phone, ':签到失败')
 
+        ######################################
+        # 处理推送信息
+        pushSignType = '上班'
+        if signType == 'END':
+            pushSignType = '下班'
+
+        pushSignIsOK = '成功！'
+        if not signResp:
+            pushSignIsOK = '失败！'
+
+        # 推送消息内容构建
+
+        MessagePush.pushMessage(phone, phone + '工学云' + pushSignType + '打卡' + pushSignIsOK,
+                                '用户：' + phone + '，工学云' + pushSignType + '打卡' + pushSignIsOK
+                                , user["pushKey"])
+
+        # 消息推送处理完毕
+        #####################################
+
+        print('-------------', phone, ':签到完成--------------')
