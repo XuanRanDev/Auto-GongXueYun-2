@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
         if userInfo["code"] != 200:
             print(phone + ',打卡失败，错误原因:' + userInfo["msg"])
-            MessagePush.pushMessage(phone, phone + '工学云打卡失败！',
+            MessagePush.pushMessage(phone, '工学云打卡失败！',
                                     '用户：' + phone + ',' + '打卡失败！错误原因：' + userInfo["msg"],
                                     user["pushKey"])
             continue
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
         # 推送消息内容构建
 
-        MessagePush.pushMessage(phone, phone + '工学云' + pushSignType + '打卡' + pushSignIsOK,
+        MessagePush.pushMessage(phone, '工学云' + pushSignType + '打卡' + pushSignIsOK,
                                 '用户：' + phone + '，工学云' + pushSignType + '打卡' + pushSignIsOK
                                 , user["pushKey"])
 
