@@ -13,6 +13,9 @@ import MessagePush
 
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 
+# 设置重连次数
+requests.adapters.DEFAULT_RETRIES = 5
+
 
 def get_plan_id(token: str, sign: str):
     url = "https://api.moguding.net:9000/practice/plan/v3/getPlanByStu"
