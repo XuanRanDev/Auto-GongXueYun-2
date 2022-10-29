@@ -106,60 +106,80 @@ def getToken(user):
     return res.json()
 
 
+def prepareSign(user):
+    userInfo = getToken(user)
+    phone = user["phone"]
+
+    if userInfo["code"] != 200:
+        print(phone + ',打卡失败，错误原因:' + userInfo["msg"])
+        MessagePush.pushMessage(phone, '工学云打卡失败！',
+                                '用户：' + phone + ',' + '打卡失败！错误原因：' + userInfo["msg"],
+                                user["pushKey"])
+        return
+    print('已登录：', phone)
+
+    userId = userInfo["data"]["userId"]
+    moguNo = userInfo["data"]["moguNo"]
+    token = userInfo["data"]["token"]
+
+    sign = getSign2(userId + 'student')
+    planId = get_plan_id(token, sign)
+    hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+    if hourNow < 12:
+        signType = 'START'
+    else:
+        signType = 'END'
+    print('-------------', phone, ':准备签到--------------')
+    signResp, msg = save(userId, token, planId,
+                         user["country"], user["province"], user["address"],
+                         signType=signType, description='', device=user['type'],
+                         latitude=user["latitude"], longitude=user["longitude"])
+    if signResp:
+        print(phone, ':签到成功')
+    else:
+        print(phone, ':签到失败')
+
+    ######################################
+    # 处理推送信息
+    pushSignType = '上班'
+    if signType == 'END':
+        pushSignType = '下班'
+
+    pushSignIsOK = '成功！'
+    if not signResp:
+        pushSignIsOK = '失败！'
+
+    # 推送消息内容构建
+
+    MessagePush.pushMessage(phone, '工学云' + pushSignType + '打卡' + pushSignIsOK,
+                            '用户：' + phone + '，工学云' + pushSignType + '打卡' + pushSignIsOK
+                            , user["pushKey"])
+
+    # 消息推送处理完毕
+    #####################################
+
+    print('-------------', phone, ':签到完成--------------')
+
+
+def retrySign(user, flag):
+    if flag == 2:
+        MessagePush.pushMessage(user['phone'], '工学云打卡失败',
+                                '工学云打卡失败，请尝试手动打卡'
+                                , user["pushKey"])
+        return
+
+    try:
+        print('重试次数：', flag + 1)
+        prepareSign(user)
+    except Exception as e:
+        retrySign(user, flag + 1)
+
+
 if __name__ == '__main__':
     users = parseUserInfo()
     for user in users:
-
-        userInfo = getToken(user)
-        phone = user["phone"]
-
-        if userInfo["code"] != 200:
-            print(phone + ',打卡失败，错误原因:' + userInfo["msg"])
-            MessagePush.pushMessage(phone, '工学云打卡失败！',
-                                    '用户：' + phone + ',' + '打卡失败！错误原因：' + userInfo["msg"],
-                                    user["pushKey"])
-            continue
-        print('已登录：', phone)
-
-        userId = userInfo["data"]["userId"]
-        moguNo = userInfo["data"]["moguNo"]
-        token = userInfo["data"]["token"]
-
-        sign = getSign2(userId + 'student')
-        planId = get_plan_id(token, sign)
-        hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
-        signType = ''
-        if hourNow < 12:
-            signType = 'START'
-        else:
-            signType = 'END'
-        print('-------------', phone, ':准备签到--------------')
-        signResp, msg = save(userId, token, planId,
-                        user["country"], user["province"], user["address"],
-                        signType=signType, description='', device=user['type'],
-                        latitude=user["latitude"], longitude=user["longitude"])
-        if signResp:
-            print(phone, ':签到成功')
-        else:
-            print(phone, ':签到失败')
-
-        ######################################
-        # 处理推送信息
-        pushSignType = '上班'
-        if signType == 'END':
-            pushSignType = '下班'
-
-        pushSignIsOK = '成功！'
-        if not signResp:
-            pushSignIsOK = '失败！'
-
-        # 推送消息内容构建
-
-        MessagePush.pushMessage(phone, '工学云' + pushSignType + '打卡' + pushSignIsOK,
-                                '用户：' + phone + '，工学云' + pushSignType + '打卡' + pushSignIsOK
-                                , user["pushKey"])
-
-        # 消息推送处理完毕
-        #####################################
-
-        print('-------------', phone, ':签到完成--------------')
+        try:
+            prepareSign(user)
+        except Exception as e:
+            print(user['phone'], '签到失败，准备重试')
+            retrySign(user, 0)
