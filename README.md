@@ -31,13 +31,13 @@ Github Actions
 
 1.点击Use this template使用模板🤪
 
-![image-20221021091000013](README.assets/image-20221021091000013.png)
+![image-20221021091000013](https://tc.xuanran.cc/2022/11/10/c62d587ee5c3a.png)
 
 
 </br>
 2.设置仓库相关信息😯
 
-![image-20221021091244279](README.assets/image-20221021091244279.png)
+![image-20221021091244279](https://tc.xuanran.cc/2022/11/10/95597e966ddda.png)
 
 
 </br>
@@ -45,7 +45,7 @@ Github Actions
 
 3.稍等一会就能生成一个仓库了😴
 
-![image-20221021091413583](README.assets/image-20221021091413583.png)
+![image-20221021091413583](https://tc.xuanran.cc/2022/11/10/f7a8597b43fc0.png)
 
 </br>
 4.编辑user.json配置文件🤔
@@ -92,9 +92,9 @@ Github Actions
 
 5.在Actions里面运行Sign进行测试，查看是否能够打卡成功以及消息是否成功推送。🤤
 
-![image-20221021092523527](README.assets/image-20221021092523527.png)
+![image-20221021092523527](https://tc.xuanran.cc/2022/11/10/275373c389312.png)
 
-![image-20221021092656804](README.assets/image-20221021092656804.png)
+![image-20221021092656804](https://tc.xuanran.cc/2022/11/10/49442d76b36a8.png)
 
 
 
@@ -114,7 +114,7 @@ Github Actions
 </br>
 1.编辑sign.yml文件，找到图中我圈出的部分
 
-![image-20221021093411661](README.assets/image-20221021093411661.png)
+![image-20221021093411661](https://tc.xuanran.cc/2022/11/10/5d81dcc0bff46.png)
 
 </br>
 
