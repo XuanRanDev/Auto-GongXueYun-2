@@ -58,7 +58,7 @@ Github Actions
 
 如果是只有一个用户就把多余的用户2给删掉。
 
-其中经纬度可以通过高德坐标拾取来完成，[传送门](https://lbs.amap.com/tools/picker)
+其中经纬度可以通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/)
 
 消息推送的使用pushPlus，请到官网绑定微信（[传送门](https://www.pushplus.plus/)），然后在发送消息里面把你的token复制出来粘贴到pushKey这项
 
