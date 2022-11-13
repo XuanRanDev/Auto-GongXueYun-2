@@ -32,7 +32,7 @@ jobs:
     - name: Install pytz
       run: |
         pip install pytz
-        
+      
     - name: Install Crypto
       run: |
         pip install pycryptodome
