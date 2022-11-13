@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import random
+import sys
 import time
 from hashlib import md5
 
@@ -38,7 +39,10 @@ def getUserAgent(user):
     if user["user-agent"] != 'null':
         return user["user-agent"]
 
-    return "Mozilla/5.0 (Linux; Android 12; MI 12 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)"
+    return random.choice(
+        ['Mozilla/5.0 (Android 11 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
+         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36'])
 
 
 def getSign2(text: str):
@@ -59,7 +63,7 @@ def parseUserInfo():
     return json.loads(allUser)
 
 
-def save(userId: str, token: str, planId: str, country: str, province: str,
+def save(user, userId: str, token: str, planId: str, country: str, province: str,
          address: str, signType: str = "START", description: str = "",
          device: str = "Android", latitude: str = None, longitude: str = None):
     text = device + signType + planId + userId + f"{country}{province}{address}"
@@ -175,7 +179,7 @@ def startSign(userId, token, planId, user, startType):
         latitude = latitude[0:len(latitude) - 1] + str(random.randint(0, 10))
         longitude = longitude[0:len(longitude) - 1] + str(random.randint(0, 10))
 
-    signResp, msg = save(userId, token, planId,
+    signResp, msg = save(user, userId, token, planId,
                          user["country"], user["province"], user["address"],
                          signType=signType, description='', device=user['type'],
                          latitude=latitude, longitude=longitude)
@@ -211,15 +215,18 @@ def startSign(userId, token, planId, user, startType):
 
 def signCheck(users):
     for user in users:
-        url = "https://api.moguding.net/attendence/clock/v1/listSynchro"
-        token = ""
+        if not user["signCheck"] and user["enable"]:
+            continue
+
+        url = "https://api.moguding.net:9000/attendence/clock/v1/listSynchro"
         if user["keepLogin"]:
-            print('使用')
+            print('保持登录状态开启，无需重新登录')
             token = user["token"]
         else:
             token = getToken(user)["data"]["token"]
         header = {
-            "content-type": "application/json; charset=UTF-8",
+            "accept-encoding": "gzip",
+            "content-type": "application/json;charset=UTF-8",
             "rolekey": "student",
             "host": "api.moguding.net:9000",
             "authorization": token,
@@ -227,16 +234,36 @@ def signCheck(users):
         }
         t = str(int(time.time() * 1000))
         data = {
-            "startTime": "2022-05-13 00:00:00",
-            "endTime": "2022-12-13 00:00:00",
             "t": encrypt("23DbtQHR2UMbH6mJ", t)
         }
         res = requests.post(url=url, headers=header, data=json.dumps(data))
-        print(res.text)
+
+        if res.json()["msg"] != 'success':
+            print('获取打卡记录失败，请检查')
+            continue
+
+        lastSignInfo = res.json()["data"][0]
+        lastSignDate = lastSignInfo["dateYmd"]
+        lastSignType = lastSignInfo["type"]
+        hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+        nowDate = str(datetime.datetime.now(pytz.timezone('PRC')))[0:10]
+        if hourNow <= 12 and lastSignType == 'END' and lastSignDate != nowDate:
+            print('今日未打上班卡，准备补签')
+            prepareSign(user)
+        if hourNow >= 18 and lastSignType == 'START' and lastSignDate == nowDate:
+            print('今日未打下班卡，准备补签')
+            prepareSign(user)
+        print('打卡检查运行完成...')
+        continue
 
 
 if __name__ == '__main__':
     users = parseUserInfo()
+    hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+    if hourNow == 11 or hourNow == 18:
+        # 今日打卡检查
+        signCheck(users)
+        sys.exit()
     for user in users:
         try:
             prepareSign(user)
