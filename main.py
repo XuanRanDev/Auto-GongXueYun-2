@@ -55,7 +55,6 @@ def parseUserInfo():
 def save(userId: str, token: str, planId: str, country: str, province: str,
          address: str, signType: str = "START", description: str = "",
          device: str = "Android", latitude: str = None, longitude: str = None):
-    return False, 'ok'
     text = device + signType + planId + userId + f"{country}{province}{address}"
     headers2 = {
         'roleKey': 'student',
@@ -145,7 +144,6 @@ def prepareSign(user, keepLogin=True):
         return
 
     userId = userInfo["data"]["userId"]
-    moguNo = userInfo["data"]["moguNo"]
     token = userInfo["data"]["token"]
 
     sign = getSign2(userId + 'student')
@@ -235,26 +233,14 @@ def signCheck(users):
         }
         res = requests.post(url=url, headers=header, data=json.dumps(data))
         print(res.text)
-        # if res["code"] != 200:
-        #     print('运行打卡检查失败')
-        #     return
 
 
 if __name__ == '__main__':
     users = parseUserInfo()
 
-    hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
-    # 每日11点以及23点为打卡检查，此时程序不会运行打卡。
-    if hourNow == 12 or hourNow == 23:
-        # TODO
-        print('每日11点以及23点打卡检查开始运行，此时间段内程序将不会运行打卡')
-        # signCheck(users)
-        sys.exit(0)
-
     for user in users:
         try:
-            print(user)
             prepareSign(user)
         except Exception as e:
-            print(user['phone'], '签到失败，准备重试')
+            print('签到失败，准备重试')
             retrySign(user, 0)

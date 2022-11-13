@@ -1,0 +1,22 @@
+[
+  {
+    "enable": true,
+    "phone": "手机号",
+    "password": "密码",
+    "keepLogin": false,
+    "token": "token",
+    "userId": "",
+    "planId": "",
+    "randomLocation": false,
+    "user-agent": "null",
+    "signCheck": true,
+    "country": "",
+    "province": "",
+    "city": "",
+    "type": "",
+    "address": "",
+    "latitude": "",
+    "longitude": "",
+    "pushKey": ""
+  }
+]
