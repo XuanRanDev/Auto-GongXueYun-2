@@ -168,10 +168,17 @@ def startSign(userId, token, planId, user, startType):
         signType = 'END'
     phone = user["phone"]
     print('-------------准备签到--------------')
+
+    latitude = user["latitude"]
+    longitude = user["longitude"]
+    if user["randomLocation"]:
+        latitude = latitude[0:len(latitude) - 1] + str(random.randint(0, 10))
+        longitude = longitude[0:len(longitude) - 1] + str(random.randint(0, 10))
+
     signResp, msg = save(userId, token, planId,
                          user["country"], user["province"], user["address"],
                          signType=signType, description='', device=user['type'],
-                         latitude=user["latitude"], longitude=user["longitude"])
+                         latitude=latitude, longitude=longitude)
     if signResp:
         print('签到成功')
     else:
