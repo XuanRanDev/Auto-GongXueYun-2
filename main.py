@@ -250,7 +250,7 @@ def signCheck(users):
         if hourNow <= 12 and lastSignType == 'END' and lastSignDate != nowDate:
             print('今日未打上班卡，准备补签')
             prepareSign(user)
-        if hourNow >= 18 and lastSignType == 'START' and lastSignDate == nowDate:
+        if hourNow >= 23 and lastSignType == 'START' and lastSignDate == nowDate:
             print('今日未打下班卡，准备补签')
             prepareSign(user)
         print('打卡检查运行完成...')
@@ -260,8 +260,8 @@ def signCheck(users):
 if __name__ == '__main__':
     users = parseUserInfo()
     hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
-    if hourNow == 11 or hourNow == 18:
-        # 今日打卡检查
+    if hourNow == 11 or hourNow == 23:
+        # 每日11点以及23点为打卡检查，此时间段内自动打卡不会运行
         signCheck(users)
         sys.exit()
     for user in users:
