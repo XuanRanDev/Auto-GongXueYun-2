@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import random
 import time
 from hashlib import md5
 
@@ -27,10 +28,17 @@ def get_plan_id(token: str, sign: str):
         "authorization": token,
         "sign": sign,
         "content-type": "application/json; charset=UTF-8",
-        "user-agent": 'Mozilla/5.0 (Linux; Android 9; MI 6 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)'
+        "user-agent": getUserAgent(user)
     }
     res = requests.post(url=url, data=json.dumps(data), headers=headers2)
     return res.json()["data"][0]["planId"]
+
+
+def getUserAgent(user):
+    if user["user-agent"] != 'null':
+        return user["user-agent"]
+
+    return "Mozilla/5.0 (Linux; Android 12; MI 12 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)"
 
 
 def getSign2(text: str):
@@ -57,7 +65,7 @@ def save(userId: str, token: str, planId: str, country: str, province: str,
     text = device + signType + planId + userId + f"{country}{province}{address}"
     headers2 = {
         'roleKey': 'student',
-        "user-agent": 'Mozilla/5.0 (Linux; Android 9; MI 6 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)',
+        "user-agent": getUserAgent(user),
         "sign": getSign2(text=text),
         "authorization": token,
         "content-type": "application/json; charset=UTF-8"
@@ -100,7 +108,7 @@ def getToken(user):
     }
     headers2 = {
         "content-type": "application/json; charset=UTF-8",
-        "user-agent": 'Mozilla/5.0 (Linux; Android 9; MI 6 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)'
+        "user-agent": getUserAgent(user)
     }
     res = requests.post(url=url, data=json.dumps(data), headers=headers2)
     return res.json()
@@ -208,7 +216,7 @@ def signCheck(users):
             "rolekey": "student",
             "host": "api.moguding.net:9000",
             "authorization": token,
-            "user-agent": 'Mozilla/5.0 (Linux; Android 9; MI 6 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)'
+            "user-agent": getUserAgent(user)
         }
         t = str(int(time.time() * 1000))
         data = {
