@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import sys
 import time
 from hashlib import md5
 
@@ -46,14 +47,15 @@ def parseUserInfo():
             for line in lines:
                 allUser = allUser + line + '\n'
     else:
-        print("错误：无法找到配置文件")
-        return
+        print("错误：无法找到配置文件,将从系统环境变量中读取信息！")
+        return json.loads(os.environ.get("USERS", ""))
     return json.loads(allUser)
 
 
 def save(userId: str, token: str, planId: str, country: str, province: str,
          address: str, signType: str = "START", description: str = "",
          device: str = "Android", latitude: str = None, longitude: str = None):
+    return False, 'ok'
     text = device + signType + planId + userId + f"{country}{province}{address}"
     headers2 = {
         'roleKey': 'student',
@@ -106,17 +108,41 @@ def getToken(user):
     return res.json()
 
 
-def prepareSign(user):
+def useUserTokenSign(user):
+    phone = user["phone"]
+    token = user["token"]
+    userId = user["userId"]
+    planId = user["planId"]
+    signStatus = startSign(userId, token, planId, user, startType=0)
+    if signStatus:
+        print('警告：使用备Token失效，请及时更新Token')
+        print('重试：正在准备使用账户密码重新签到')
+        MessagePush.pushMessage(phone, '工学云设备Token失效',
+                                '工学云自动打卡设备Token失效，本次将使用账号密码重新登录签到，请及时更新配置文件中的Token' +
+                                ',如不再需要保持登录状态,请及时将配置文件中的keepLogin更改为False取消保持登录打卡，如有疑问请联系微信：XuanRan_Dev'
+                                , user["pushKey"])
+        prepareSign(user, keepLogin=False)
+
+
+def prepareSign(user, keepLogin=True):
+    if not user["enable"]:
+        return
+
+    if user["keepLogin"] and keepLogin:
+        # 启用了保持登录状态，则使用设备Token登录
+        print('用户启用了保持登录，准备使用设备Token登录')
+        useUserTokenSign(user)
+        return
+
     userInfo = getToken(user)
     phone = user["phone"]
 
     if userInfo["code"] != 200:
-        print(phone + ',打卡失败，错误原因:' + userInfo["msg"])
+        print('打卡失败，错误原因:' + userInfo["msg"])
         MessagePush.pushMessage(phone, '工学云打卡失败！',
                                 '用户：' + phone + ',' + '打卡失败！错误原因：' + userInfo["msg"],
                                 user["pushKey"])
         return
-    print('已登录：', phone)
 
     userId = userInfo["data"]["userId"]
     moguNo = userInfo["data"]["moguNo"]
@@ -124,20 +150,30 @@ def prepareSign(user):
 
     sign = getSign2(userId + 'student')
     planId = get_plan_id(token, sign)
+    startSign(userId, token, planId, user, startType=1)
+
+
+# startType = 0 使用保持登录状态签到
+# startType = 1 使用登录签到
+def startSign(userId, token, planId, user, startType):
     hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
     if hourNow < 12:
         signType = 'START'
     else:
         signType = 'END'
-    print('-------------', phone, ':准备签到--------------')
+    phone = user["phone"]
+    print('-------------准备签到--------------')
     signResp, msg = save(userId, token, planId,
                          user["country"], user["province"], user["address"],
                          signType=signType, description='', device=user['type'],
                          latitude=user["latitude"], longitude=user["longitude"])
     if signResp:
-        print(phone, ':签到成功')
+        print('签到成功')
     else:
-        print(phone, ':签到失败')
+        print('签到失败')
+        if not startType:
+            print('-------------签到完成--------------')
+            return True
 
     ######################################
     # 处理推送信息
@@ -158,7 +194,7 @@ def prepareSign(user):
     # 消息推送处理完毕
     #####################################
 
-    print('-------------', phone, ':签到完成--------------')
+    print('-------------签到完成--------------')
 
 
 def retrySign(user, flag):
@@ -175,10 +211,50 @@ def retrySign(user, flag):
         retrySign(user, flag + 1)
 
 
+def signCheck(users):
+    for user in users:
+        url = "https://api.moguding.net/attendence/clock/v1/listSynchro"
+        token = ""
+        if user["keepLogin"]:
+            print('使用')
+            token = user["token"]
+        else:
+            token = getToken(user)["data"]["token"]
+        header = {
+            "content-type": "application/json; charset=UTF-8",
+            "rolekey": "student",
+            "host": "api.moguding.net:9000",
+            "authorization": token,
+            "user-agent": 'Mozilla/5.0 (Linux; Android 9; MI 6 Build/PKQ1.190118.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/76.0.3809.89 Mobile Safari/537.36 T7/11.20 SP-engine/2.16.0 baiduboxapp/11.20.2.3 (Baidu; P1 9)'
+        }
+        t = str(int(time.time() * 1000))
+        data = {
+            "startTime": "2022-05-13 00:00:00",
+            "endTime": "2022-12-13 00:00:00",
+            "t": encrypt("23DbtQHR2UMbH6mJ", t)
+        }
+        res = requests.post(url=url, headers=header, data=json.dumps(data))
+        print(res.text)
+        # if res["code"] != 200:
+        #     print('运行打卡检查失败')
+        #     return
+
+
 if __name__ == '__main__':
     users = parseUserInfo()
+
+    hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+    # 每日11点以及23点为打卡检查，此时程序不会运行打卡。
+    if hourNow == 12 or hourNow == 23:
+        # TODO
+        print('每日11点以及23点打卡检查开始运行，此时间段内程序将不会运行打卡')
+        # signCheck(users)
+        sys.exit(0)
+
     for user in users:
         try:
+            print(user)
+            sys.exit(0)
             prepareSign(user)
         except Exception as e:
             print(user['phone'], '签到失败，准备重试')

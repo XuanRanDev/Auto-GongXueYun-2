@@ -32,11 +32,13 @@ jobs:
     - name: Install pytz
       run: |
         pip install pytz
-        
+      
     - name: Install Crypto
       run: |
         pip install pycryptodome
     
     - name: Start sign
+      env:
+        USERS: ${{ secrets.USERS }}
       run: |
         python main.py
