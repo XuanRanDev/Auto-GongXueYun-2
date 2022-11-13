@@ -254,7 +254,6 @@ if __name__ == '__main__':
     for user in users:
         try:
             print(user)
-            sys.exit(0)
             prepareSign(user)
         except Exception as e:
             print(user['phone'], '签到失败，准备重试')
