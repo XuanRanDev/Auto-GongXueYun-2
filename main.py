@@ -1,7 +1,6 @@
 import datetime
 import json
 import os
-import sys
 import time
 from hashlib import md5
 
@@ -114,7 +113,7 @@ def useUserTokenSign(user):
     planId = user["planId"]
     signStatus = startSign(userId, token, planId, user, startType=0)
     if signStatus:
-        print('警告：使用备Token失效，请及时更新Token')
+        print('警告：保持登录失败，Token失效，请及时更新Token')
         print('重试：正在准备使用账户密码重新签到')
         MessagePush.pushMessage(phone, '工学云设备Token失效',
                                 '工学云自动打卡设备Token失效，本次将使用账号密码重新登录签到，请及时更新配置文件中的Token' +
@@ -195,20 +194,6 @@ def startSign(userId, token, planId, user, startType):
     print('-------------签到完成--------------')
 
 
-def retrySign(user, flag):
-    if flag == 2:
-        MessagePush.pushMessage(user['phone'], '工学云打卡失败',
-                                '工学云打卡失败，请尝试手动打卡'
-                                , user["pushKey"])
-        return
-
-    try:
-        print('重试次数：', flag + 1)
-        prepareSign(user)
-    except Exception as e:
-        retrySign(user, flag + 1)
-
-
 def signCheck(users):
     for user in users:
         url = "https://api.moguding.net/attendence/clock/v1/listSynchro"
@@ -237,10 +222,10 @@ def signCheck(users):
 
 if __name__ == '__main__':
     users = parseUserInfo()
-
     for user in users:
         try:
             prepareSign(user)
         except Exception as e:
-            print('签到失败，准备重试')
-            retrySign(user, 0)
+            MessagePush.pushMessage(user["phone"], '工学云打卡失败',
+                                    '工学云打卡失败, 可能是连接工学云服务器超时。'
+                                    , user["pushKey"])
