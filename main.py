@@ -129,7 +129,7 @@ def useUserTokenSign(user):
         print('重试：正在准备使用账户密码重新签到')
         MessagePush.pushMessage(phone, '工学云设备Token失效',
                                 '工学云自动打卡设备Token失效，本次将使用账号密码重新登录签到，请及时更新配置文件中的Token' +
-                                ',如不再需要保持登录状态,请及时将配置文件中的keepLogin更改为False取消保持登录打卡，如有疑问请联系微信：XuanRan_Dev'
+                                ',如不再需要保持登录状态,请及时将配置文件中的keepLogin更改为False取消保持登录打卡，如有疑问请联系邮箱：XuanRanDev@qq.com'
                                 , user["pushKey"])
         prepareSign(user, keepLogin=False)
 
