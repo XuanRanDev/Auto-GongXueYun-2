@@ -1,29 +1,22 @@
 [
   {
-    "phone": "用户1手机号",
-    "password": "用户1密码",
-    "token": "什么也不填",
-    "country": "中国",
-    "province": "省份",
-    "city": "哪个市",
-    "type": "设备类型（android 或 ios）",
-    "address": "签到地址",
-    "latitude": "纬度",
-    "longitude": "精度",
-    "pushKey": "推送Key"
-  },
-  {
-    "phone": "用户2手机号",
-    "password": "用户2密码",
-    "token": "什么也不填",
-    "country": "中国",
-    "province": "所在省份",
-    "city": "所在市",
-    "type": "设备类型（android 或 ios）",
-    "address": "签到地址",
-    "latitude": "纬度",
-    "longitude": "精度",
-    "pushKey": "推送Key"
+    "enable": true,
+    "phone": "",
+    "password": "",
+    "keepLogin": false,
+    "token": "",
+    "userId": "",
+    "planId": "",
+    "randomLocation": false,
+    "user-agent": "null",
+    "signCheck": true,
+    "country": "",
+    "province": "",
+    "city": "",
+    "type": "",
+    "address": "",
+    "latitude": "",
+    "longitude": "",
+    "pushKey": ""
   }
-
 ]
