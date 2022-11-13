@@ -5,30 +5,34 @@ Auto-GongXueYun
 <p align="center">
 🥰工学云自动打卡解决方案🥰
 </p>
+<p align="center">
+支持多用户、自定义位置信息、保持登录状态、每日打卡检查（TODO）
+</br>
+打卡位置浮动、自定义UA、微信消息推送、自动填写周报（TODO）
+</p>
 </div>
-
-</br>
 </br>
 
-# 警告
-代码正在测试中，请稍后再使用
 
 
+## 目录
 
-## 项目介绍
-工学云每日上下班打卡，支持多账号，指定地区，PushPlus打卡结果推送，整个工程只有两个Python文件以及一个user.json配置文件，十分简单、轻量。😍
 
-</br>
+[toc]
+
+## 使用门槛
+
+**点一下右上角的星星**
+
+
 
 ## 使用方法
 
-Github Actions
+### Github Actions
 
-推荐指数：⭐⭐⭐⭐
+推荐指数：⭐⭐⭐⭐⭐
 
-优点：
-
-适合没有自己服务器的人使用。
+优点：适合没有自己服务器的人使用。
 
 
 缺点：
@@ -39,76 +43,86 @@ Github Actions
 
 </br>
 
+1.点击Star后Fork本仓库🤪
 
-1.点击Use this template使用模板🤪
-
-![image-20221021091000013](https://tc.xuanran.cc/2022/11/10/c62d587ee5c3a.png)
-
-
+![1.png](https://tc.xuanran.cc/2022/11/13/1932d085c97c2.png)
+![2.png](https://tc.xuanran.cc/2022/11/13/c6e9abebb113c.png)
 </br>
-2.设置仓库相关信息😯
+2.准备配置文件🤔
 
-![image-20221021091244279](https://tc.xuanran.cc/2022/11/10/95597e966ddda.png)
-
-
-</br>
-
-
-3.稍等一会就能生成一个仓库了😴
-
-![image-20221021091413583](https://tc.xuanran.cc/2022/11/10/f7a8597b43fc0.png)
-
-</br>
-4.编辑user.json配置文件🤔
-
-如果是只有一个用户就把多余的用户2给删掉。
-
-其中经纬度可以通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/)
-
-消息推送的使用pushPlus，请到官网绑定微信（[传送门](https://www.pushplus.plus/)），然后在发送消息里面把你的token复制出来粘贴到pushKey这项
+如果想同时打卡多个用户,请再添加一个数据体就好了(不懂的给我发邮件XuanRanDev@qq.com)
 
 ```json
 [
   {
-    "phone": "用户1手机号",
-    "password": "用户1密码",
-    "token": "什么也不填",
+    "enable": true,
+    "phone": "17666666666",
+    "password": "1111111111",
+    "keepLogin": false,
+    "token": "如果keepLogin为false就不填",
+    "userId": "如果keepLogin为false就不填",
+    "planId": "如果keepLogin为false就不填",
+    "randomLocation": false,
+    "user-agent": "null",
+    "signCheck": true,
     "country": "中国",
-    "province": "省份",
-    "city": "哪个市",
-    "type": "设备类型（android 或 ios）",
-    "address": "签到地址",
-    "latitude": "纬度",
-    "longitude": "精度",
-    "pushKey": "推送Key"
-  },
-  {
-    "phone": "用户2手机号",
-    "password": "用户2密码",
-    "token": "什么也不填",
-    "country": "中国",
-    "province": "所在省份",
-    "city": "所在市",
-    "type": "设备类型（android 或 ios）",
-    "address": "签到地址",
-    "latitude": "纬度",
-    "longitude": "精度",
-    "pushKey": "推送Key"
+    "province": "河南省",
+    "city": "洛阳市",
+    "type": "android",
+    "address": "xxx",
+    "latitude": "33.1000354488",
+    "longitude": "101.57487848",
+    "pushKey": "dhsajifysfsafsdfdsxxxxxx"
   }
-
 ]
+
 ```
+
+其配置含义如下：
+
+| 参数名称       | 含义                                                         |
+| -------------- | ------------------------------------------------------------ |
+| enable         | 是否启用该用户的打卡（true或false)                           |
+| phone          | 手机号                                                       |
+| password       | 密码                                                         |
+| keepLogin      | 是否启用保持登录，启用后程序每次打卡将不再重新登录，避免挤掉手机工学云的登录，启用后请通过抓包工学云获取你的token、userId、planId然后填写在下方 |
+| token          | 如果keepLogin启用，则在此填写你的token                       |
+| userId         | 如果keepLogin启用，则在此填写你的userId                      |
+| planId         | 如果keepLogin启用，则在此填写你的planId                      |
+| randomLocation | 是否启用打卡位置浮动，启用后每次打卡会在原有位置基础上进行位置浮动 |
+| user-agent     | 是否自定义UA，如果不需要自定义填null（字符串形式），否则填写你的UA |
+| signCheck      | 每日签到检查,某些情况下action可能没网络造成打卡失败,启用此选项后,将在每日11点以及23点检查今日的打卡状态,如未打卡则补卡 |
+| country        | 国家                                                         |
+| province       | 省份                                                         |
+| city           | 城市                                                         |
+| type           | android 或 ios                                               |
+| address        | 详细地址                                                     |
+| latitude       | 纬度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
+| longitude      | 精度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
+| pushKey        | 消息推送的使用pushPlus，请到官网绑定微信（[传送门](https://www.pushplus.plus/)），然后在发送消息里面把你的token复制出来粘贴到pushKey这项 |
+
+
 
 </br>
 
-5.在Actions里面运行Sign进行测试，查看是否能够打卡成功以及消息是否成功推送。🤤
+3.配置Secret
 
-![image-20221021092523527](https://tc.xuanran.cc/2022/11/10/275373c389312.png)
+填写完成后请复制如上配置文件，然后打开仓库的Settings->Secrets->Actions->New repository secret
 
-![image-20221021092656804](https://tc.xuanran.cc/2022/11/10/49442d76b36a8.png)
+Name填USERS
 
+Secret填改好的配置文件
 
+![3.png](https://tc.xuanran.cc/2022/11/13/2143b390f8199.png)
+![4.png](https://tc.xuanran.cc/2022/11/13/8de9cb85e479b.png)
 
+4.运行测试
+![5.png](https://tc.xuanran.cc/2022/11/13/500e789b3dfec.png)
+![6.png](https://tc.xuanran.cc/2022/11/13/1366e5e0ced97.png)
+![7.png](https://tc.xuanran.cc/2022/11/13/2a2b4b7e01884.png)
+![8.png](https://tc.xuanran.cc/2022/11/13/bd1cd3218f77a.png)
+![9.png](https://tc.xuanran.cc/2022/11/13/33c6cec2e37ec.png)
+![10.png](https://tc.xuanran.cc/2022/11/13/a9e80f17d304b.png)
 </br></br></br></br>
 
 至此，自动打卡将会在每天7点和18点左右自动运行打卡。😉
@@ -121,7 +135,7 @@ Github Actions
 
 推荐指数：⭐⭐⭐⭐⭐
 
-优点：运行稳定、准时，不会出现连接超时情况。
+优点：运行稳定、准时。
 
 缺点：有一定的上手成本。
 
@@ -140,10 +154,29 @@ pip install pycryptodome
 
 4、在百度搜索：你的操作系统+ 定时任务，查看如何创建定时任务。
 
-5、在定时任务中执行python main.py即可
+5、创建一个user.json配置文件在项目目录，并将配置文件放入其中
+
+6、运行python main.py测试
 
 
 </br></br></br>
+
+
+## 启用保持登录
+启用保持登录需要会抓包，而且要抓https的包，如果你手机没Root就别想了
+
+1、下载小黄鸟，抓包软件选择工学云
+
+2、打开工学云
+
+3、在抓包软件里找到https://api.moguding.net/attendence/clock/v1/listSynchro这个请求
+
+4、找到Token以及userId、planId
+![11](https://tc.xuanran.cc/2022/11/13/520b118fe371a.jpg)
+![12](https://tc.xuanran.cc/2022/11/13/ec400140df3d8.jpg)
+
+
+
 
 ## 修改自动打卡时间🎯	
 
@@ -183,6 +216,13 @@ GitHub的cron表达式不支持精准到秒，所以从最左边开始，分别�
 
 </br>
 </br>
+
+
+## Action运行很长时间或者打卡失败
+如果遇到action运行失败或者签到失败问题，99%都是连接工学云服务器超时了，重新运行下action就行了，这点没很好的处理办法
+，我已经在代码中加入了两次的重试还不行，这是Github的问题。
+
+
 
 ## 常见问题
 如果遇到action运行失败或者签到失败问题，99%都是连接工学云服务器超时了，重新运行下action就行了。
