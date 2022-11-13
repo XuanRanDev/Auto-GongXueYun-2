@@ -38,5 +38,7 @@ jobs:
         pip install pycryptodome
     
     - name: Start sign
+      env:
+        USERS: ${{ secrets.USERS }}
       run: |
         python main.py
