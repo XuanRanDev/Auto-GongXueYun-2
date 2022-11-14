@@ -276,5 +276,5 @@ if __name__ == '__main__':
             prepareSign(user)
         except Exception as e:
             MessagePush.pushMessage(user["phone"], '工学云打卡失败',
-                                    '工学云打卡失败, 可能是连接工学云服务器超时。'
+                                    '工学云打卡失败, 可能是连接工学云服务器超时,但请别担心，这只是偶尔现象，中午11点以及晚上23点，我们会进行打卡检查，如未打卡则会自动补签（在打卡检查启用的情况下）。'
                                     , user["pushKey"])
