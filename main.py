@@ -19,7 +19,7 @@ pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 requests.adapters.DEFAULT_RETRIES = 5
 
 
-def get_plan_id(token: str, sign: str):
+def get_plan_id(user, token: str, sign: str):
     url = "https://api.moguding.net:9000/practice/plan/v3/getPlanByStu"
     data = {
         "state": ""
@@ -158,7 +158,7 @@ def prepareSign(user, keepLogin=True):
     token = userInfo["data"]["token"]
 
     sign = getSign2(userId + 'student')
-    planId = get_plan_id(token, sign)
+    planId = get_plan_id(user,token, sign)
     startSign(userId, token, planId, user, startType=1)
 
 
