@@ -158,7 +158,7 @@ def prepareSign(user, keepLogin=True):
     token = userInfo["data"]["token"]
 
     sign = getSign2(userId + 'student')
-    planId = get_plan_id(user,token, sign)
+    planId = get_plan_id(user, token, sign)
     startSign(userId, token, planId, user, startType=1)
 
 
@@ -201,10 +201,16 @@ def startSign(userId, token, planId, user, startType):
     if not signResp:
         pushSignIsOK = '失败！'
 
+    signStatus = '打卡'
+
+    hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+    if hourNow == 11 or hourNow == 23:
+        signStatus = '补签'
+
     # 推送消息内容构建
 
-    MessagePush.pushMessage(phone, '工学云' + pushSignType + '打卡' + pushSignIsOK,
-                            '用户：' + phone + '，工学云' + pushSignType + '打卡' + pushSignIsOK
+    MessagePush.pushMessage(phone, '工学云' + pushSignType + signStatus + pushSignIsOK,
+                            '用户：' + phone + '，工学云' + pushSignType + signStatus + pushSignIsOK
                             , user["pushKey"])
 
     # 消息推送处理完毕
@@ -268,13 +274,17 @@ if __name__ == '__main__':
         try:
             signCheck(users)
         except Exception as e:
-            print('每日签到检查运行错误！可能与服务器建立连接失败')
+            print('每日签到检查运行错误！可能与服务器建立连接失败,具体错误原因：' + str(e))
         print('----------------------------每日签到检查完成-----------------------------')
         sys.exit()
     for user in users:
         try:
             prepareSign(user)
         except Exception as e:
+            print('工学云打卡失败，错误原因：' + str(e))
             MessagePush.pushMessage(user["phone"], '工学云打卡失败',
-                                    '工学云打卡失败, 可能是连接工学云服务器超时,但请别担心，这只是偶尔现象，中午11点以及晚上23点，我们会进行打卡检查，如未打卡则会自动补签（在打卡检查启用的情况下）。'
+                                    '工学云打卡失败, 可能是连接工学云服务器超时,但请别担心，' +
+                                    '中午11点以及晚上23点，我们会进行打卡检查，' +
+                                    '如未打卡则会自动补签（在打卡检查启用的情况下）。\n\n\n' +
+                                    '具体错误信息：' + str(e)
                                     , user["pushKey"])
