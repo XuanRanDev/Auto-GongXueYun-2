@@ -58,7 +58,7 @@ def parseUserInfo():
             for line in lines:
                 allUser = allUser + line + '\n'
     else:
-        print("错误：无法找到配置文件,将从系统环境变量中读取信息！")
+        print("无法找到配置文件,将从系统环境变量中读取信息！")
         return json.loads(os.environ.get("USERS", ""))
     return json.loads(allUser)
 
@@ -218,11 +218,13 @@ def signCheck(users):
         if not user["signCheck"] and user["enable"]:
             continue
 
+        print()
         url = "https://api.moguding.net:9000/attendence/clock/v1/listSynchro"
         if user["keepLogin"]:
-            print('保持登录状态开启，无需重新登录')
+            print('          此用户保持登录状态开启，准备使用Token查询          ')
             token = user["token"]
         else:
+            print('            此用户保持登录状态关闭，准备登录账号          ')
             token = getToken(user)["data"]["token"]
         header = {
             "accept-encoding": "gzip",
@@ -239,7 +241,7 @@ def signCheck(users):
         res = requests.post(url=url, headers=header, data=json.dumps(data))
 
         if res.json()["msg"] != 'success':
-            print('获取打卡记录失败，请检查')
+            print('            获取用户打卡记录失败          ')
             continue
 
         lastSignInfo = res.json()["data"][0]
@@ -248,12 +250,12 @@ def signCheck(users):
         hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
         nowDate = str(datetime.datetime.now(pytz.timezone('PRC')))[0:10]
         if hourNow <= 12 and lastSignType == 'END' and lastSignDate != nowDate:
-            print('今日未打上班卡，准备补签')
+            print('            今日未打上班卡，准备补签          ')
             prepareSign(user)
         if hourNow >= 23 and lastSignType == 'START' and lastSignDate == nowDate:
-            print('今日未打下班卡，准备补签')
+            print('            今日未打下班卡，准备补签          ')
             prepareSign(user)
-        print('打卡检查运行完成...')
+        print('        Tips：如果没提示上班或者下班补签即代表上次打卡正常          ')
         continue
 
 
@@ -261,8 +263,13 @@ if __name__ == '__main__':
     users = parseUserInfo()
     hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
     if hourNow == 11 or hourNow == 23:
-        # 每日11点以及23点为打卡检查，此时间段内自动打卡不会运行
-        signCheck(users)
+        print('----------------------------每日签到检查开始-----------------------------')
+        print('          每日11点以及23点为打卡检查，此时间段内自动打卡不会运行          ')
+        try:
+            signCheck(users)
+        except Exception as e:
+            print('每日签到检查运行错误！可能与服务器建立连接失败')
+        print('----------------------------每日签到检查完成-----------------------------')
         sys.exit()
     for user in users:
         try:
