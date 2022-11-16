@@ -10,7 +10,7 @@ Auto-GongXueYun
 </br>
 打卡位置浮动、自定义UA、微信消息推送、自动填写周报（TODO）
 </br>
-<a href="https://www.bilibili.com/video/BV1VP4y117w8/?spm_id_from=333.999.0.0&vd_source=23b414916f0ead82eaa42a85d58614c8">视频教程</a>
+<a target="_blank" href="https://www.bilibili.com/video/BV1VP4y117w8/?spm_id_from=333.999.0.0&vd_source=23b414916f0ead82eaa42a85d58614c8">视频教程</a>
 </p>
 </div>
 </br>
