@@ -9,8 +9,7 @@ Auto-GongXueYun
 支持多用户、自定义位置信息、保持登录状态、每日打卡检查
 </br>
 打卡位置浮动、自定义UA、微信消息推送、自动填写周报（TODO）
-</br>
-视频教程：[哔哩哔哩](https://www.bilibili.com/video/BV1VP4y117w8/?spm_id_from=333.999.0.0&vd_source=23b414916f0ead82eaa42a85d58614c8)
+<a href="https://www.bilibili.com/video/BV1VP4y117w8/?spm_id_from=333.999.0.0&vd_source=23b414916f0ead82eaa42a85d58614c8">视频教程</a>
 </p>
 </div>
 </br>
