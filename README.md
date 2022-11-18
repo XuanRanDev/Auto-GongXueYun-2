@@ -254,11 +254,11 @@ GitHub的cron表达式不支持精准到秒，所以从最左边开始，分别�
 ## 常见问题
 如果遇到action运行失败或者签到失败问题，99%都是连接工学云服务器超时了，重新运行下action就行了。
 
-
+</br>
 ## 赞助支持
 如果此仓库帮助了你，你可以帮我买杯可乐。
-![8e0c97044ea752695c8e667cac7fc20.jpg](https://tc.xuanran.cc/2022/11/19/25e1a6b37e597.jpg)
-![bfacf4985d6398663146a22c85df287.jpg](https://tc.xuanran.cc/2022/11/19/070a273f7c8c0.jpg)
+<img src="2.assets/8e0c97044ea752695c8e667cac7fc20.jpg" alt="8e0c97044ea752695c8e667cac7fc20" style="zoom: 25%;" />
+<img src="2.assets/bfacf4985d6398663146a22c85df287.jpg" alt="bfacf4985d6398663146a22c85df287" style="zoom:25%;" />
 
 </br></br>
 最后，帮我点下仓库的小星星，Thanks.
