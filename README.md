@@ -18,26 +18,41 @@ Auto-GongXueYun
 
 
 
+## 前言
+
+**1、请务必认真阅读此文档后继续！**
+
+**2、本项目开源&免费，所有开发均仅限于学习交流，禁止用于任何商业用途。**
+
+**3、开发者不为你的使用承担任何责任。**
+
+**4、本项目开源地址为：https://github.com/XuanRanDev/Auto-GongXueYun**
+
+**5、在开始之前请务必帮我点一下右上角的star。**
+
+
+</br>
 ## 目录
 
+- [前言](#前言)
 - [使用门槛](#使用门槛)
 - [使用方法](#使用方法)
   - [Github Actions](#github-actions)
-- [使用自己的服务器部署](#使用自己的服务器部署)
+  - [使用自己的服务器部署](#使用自己的服务器部署)
 - [启用保持登录](#启用保持登录)
 - [启用每日打卡检查](#启用每日打卡检查)
 - [启用打卡位置浮动](#启用打卡位置浮动)
 - [修改自动打卡时间🎯](#修改自动打卡时间)
-- [Action运行很长时间或者打卡失败](#action运行很长时间或者打卡失败)
+- [赞助支持](#赞助支持)
 - [常见问题](#常见问题)
-
+  - [打卡失败](#打卡失败)
 
 </br>
 </br>
 
 ## 使用门槛
 
-**点一下右上角的星星**
+帮我点一下右上角的star（星星）
 
 
 
@@ -70,6 +85,7 @@ Auto-GongXueYun
 
 如果想同时打卡多个用户,请再添加一个数据体就好了(如果还不理解加我微信（XuanRan_Dev）（记得备注来意）我教你)
 
+**注意：配置文件模板下方有配置含义，请务必参照配置含义填写**
 ```json
 [
   {
@@ -80,14 +96,14 @@ Auto-GongXueYun
     "token": "如果keepLogin为false就不填",
     "userId": "如果keepLogin为false就不填",
     "planId": "如果keepLogin为false就不填",
-    "randomLocation": false,
+    "randomLocation": true,
     "user-agent": "null",
     "signCheck": true,
     "country": "中国",
     "province": "河南省",
     "city": "洛阳市",
     "type": "android",
-    "address": "xxx",
+    "address": "你的详细地址",
     "latitude": "33.1000354488",
     "longitude": "101.57487848",
     "pushKey": "dhsajifysfsafsdfdsxxxxxx"
@@ -108,16 +124,16 @@ Auto-GongXueYun
 | userId         | 如果keepLogin启用，则在此填写你的userId                      |
 | planId         | 如果keepLogin启用，则在此填写你的planId                      |
 | randomLocation | 是否启用打卡位置浮动，启用后每次打卡会在原有位置基础上进行位置浮动 |
-| user-agent     | 是否自定义UA，如果不需要自定义填null（字符串形式），否则填写你的UA |
+| user-agent     | 是否自定义UA，如果不需要自定义填null（字符串形式），否则填写你的UA（[可以点我随便选一个](https://wp.xuanran.cc/s/JBTA)） |
 | signCheck      | 每日签到检查,某些情况下action可能没网络造成打卡失败,启用此选项后,将在每日11点以及23点检查今日的打卡状态,如未打卡则补卡 |
 | country        | 国家                                                         |
 | province       | 省份                                                         |
 | city           | 城市                                                         |
 | type           | android 或 ios                                               |
-| address        | 详细地址                                                     |
-| latitude       | 纬度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
-| longitude      | 精度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
-| pushKey        | 消息推送的使用pushPlus，请到官网绑定微信（[传送门](https://www.pushplus.plus/)），然后在发送消息里面把你的token复制出来粘贴到pushKey这项 |
+| address        | 详细地址，详细地址开头最好加上市，比如说洛阳市西工区xxx街道  |
+| latitude       | 打卡位置纬度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
+| longitude      | 打卡位置精度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
+| pushKey        | 打卡结果微信推送，微信推送使用的是pushPlus，请到官网绑定微信([传送门](https://www.pushplus.plus/))，然后在发送消息里面把你的token复制出来粘贴到pushKey这项 |
 
 
 
@@ -148,10 +164,9 @@ Secret填改好的配置文件
 
 </br></br></br>
 
+### 使用自己的服务器部署
 
-## 使用自己的服务器部署
-
-推荐指数：⭐⭐⭐⭐⭐
+推荐指数：⭐⭐
 
 优点：运行稳定、准时。
 
@@ -176,34 +191,42 @@ pip install pycryptodome
 
 6、运行python main.py测试
 
-
 </br></br></br>
 
 
+
+
 ## 启用保持登录
+启用保持登录指的是打卡程序在启用保持登录开启后不再使用账号密码登录打卡，而是使用Token方式。
+
 启用保持登录需要会抓包，而且要抓https的包，如果你手机没Root就别想了
 
 1、下载小黄鸟，抓包软件选择工学云
 
 2、打开工学云
 
-3、在抓包软件里找到https://api.moguding.net/attendence/clock/v1/listSynchro这个请求
+3、在抓包软件里找到https://api.moguding.net/attendence/clock/v1/listSynchro
+这个请求
 
 4、找到Token以及userId、planId
 ![11](https://tc.xuanran.cc/2022/11/13/520b118fe371a.jpg)
 ![12](https://tc.xuanran.cc/2022/11/13/ec400140df3d8.jpg)
 
 
+
+</br></br>
+
+
 ## 启用每日打卡检查
-因为Github Action某些情况下可能会无法连接工学云服务器造成打卡+推送失败问题，为此推出每日打卡检查，启用后，每日11点以及23点将会对今日打卡情况进行分析，如存在漏签则自动补签。
+因为Github Action某些情况下可能会无法连接工学云服务器造成打卡+推送失败问题，为此推出每日打卡检查，启用后，每日11点（有2次检查）以及23点（也有2次检查）将会对今日打卡情况进行分析，如存在漏签则自动补签。
 
 如需开启，请在配置文件中的signCheck设置为true
-</br>
+</br></br>
 
 
 ## 启用打卡位置浮动
 启用打卡位置浮动后，每次打卡系统会在原有经纬度中删掉最后一位数字，并随机加入一位数字，使每次打卡经纬度不同。
-</br>
+</br></br>
 
 ## 修改自动打卡时间🎯	
 
@@ -245,24 +268,29 @@ GitHub的cron表达式不支持精准到秒，所以从最左边开始，分别�
 </br>
 
 
-## Action运行很长时间或者打卡失败
-如果遇到action运行失败或者签到失败问题，99%都是连接工学云服务器超时了，重新运行下action就行了，这点没很好的处理办法
-，我已经在代码中加入了两次的重试还不行，这是Github的问题。
+
+
+
+## 赞助支持
+
+如果此仓库帮助了你学到了新知识，你可以帮我买杯可乐。
+
+![赞助支持](https://tc.xuanran.cc/2022/11/20/b8f5ddc944634.png)
 
 
 
 ## 常见问题
-如果遇到action运行失败或者签到失败问题，99%都是连接工学云服务器超时了，重新运行下action就行了。
 
-</br>
-## 赞助支持
-如果此仓库帮助了你，你可以帮我买杯可乐。
-<img src="https://tc.xuanran.cc/2022/11/19/25e1a6b37e597.jpg" alt="8e0c97044ea752695c8e667cac7fc20" style="zoom: 25%;" />
-<img src="https://tc.xuanran.cc/2022/11/19/070a273f7c8c0.jpg" alt="bfacf4985d6398663146a22c85df287" style="zoom:25%;" />
+### 打卡失败 
+
+如果遇到action运行失败或者打卡失败，99%都是连接工学云服务器超时了，重新运行下action就行了，这点没很好的处理办法，我已经在代码中加入了两次的重试还不行，这是Github的问题。
+
+
+
+
+
 
 </br></br>
 最后，帮我点下仓库的小星星，Thanks.
-
-
 
 😀😀😀😀😀
