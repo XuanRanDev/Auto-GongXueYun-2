@@ -96,7 +96,7 @@ Auto-GongXueYun
     "planId": "如果keepLogin为false就不填",
     "randomLocation": true,
     "user-agent": "null",
-    "signCheck": true,
+    "signCheck": false,
     "country": "中国",
     "province": "河南省",
     "city": "洛阳市",
