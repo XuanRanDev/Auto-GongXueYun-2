@@ -26,9 +26,7 @@ Auto-GongXueYun
 
 **3、开发者不为你的使用承担任何责任。**
 
-**4、本项目开源地址为：https://github.com/XuanRanDev/Auto-GongXueYun**
-
-**5、在开始之前请务必帮我点一下右上角的star。**
+**4、在开始之前请务必帮我点一下右上角的star。**
 
 
 </br>
