@@ -23,6 +23,7 @@ jobs:
 
     - name: Install depend
       run: |
+        pip install requests
         pip install pytz
         pip install pycryptodome
 
