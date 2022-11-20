@@ -1,0 +1,22 @@
+[
+  {
+    "enable": true,
+    "phone": "1599677755",
+    "password": "abcd12311..",
+    "keepLogin": false,
+    "token": "",
+    "userId": "",
+    "planId": "",
+    "randomLocation": true,
+    "user-agent": "null",
+    "signCheck": true,
+    "country": "中国",
+    "province": "河南省",
+    "city": "xx市",
+    "type": "android",
+    "address": "xxx",
+    "latitude": "3xxx",
+    "longitude": "1xxxxxxxx",
+    "pushKey": "xxxxxxxxxxxxxxxxxxxxxxfa"
+  }
+]
