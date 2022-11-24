@@ -26,6 +26,8 @@ Auto-GongXueYun
 
 **3、在开始之前请务必帮我点一下右上角的star。**
 
+**4、最新发行版（正式版）及更新日志请参见[Release](https://github.com/XuanRanDev/Auto-GongXueYun/releases/tag/v1.0)。**
+
 
 </br>
 
