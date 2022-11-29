@@ -131,8 +131,8 @@ Auto-GongXueYun
 | city           | 城市                                                         |
 | type           | android 或 ios                                               |
 | address        | 详细地址，详细地址开头最好加上市，比如说洛阳市西工区xxx街道  |
-| latitude       | 打卡位置纬度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
-| longitude      | 打卡位置精度,通过坐标拾取来完成，[传送门](https://jingweidu.bmcx.com/) |
+| latitude       | 打卡位置纬度,通过坐标拾取来完成(仅需精确到小数点后6位)，[传送门](https://jingweidu.bmcx.com/) |
+| longitude      | 打卡位置精度,通过坐标拾取来完成(仅需精确到小数点后6位)，[传送门](https://jingweidu.bmcx.com/) |
 | pushKey        | 打卡结果微信推送，微信推送使用的是pushPlus，请到官网绑定微信([传送门](https://www.pushplus.plus/))，然后在发送消息里面把你的token复制出来粘贴到pushKey这项 |
 
 
