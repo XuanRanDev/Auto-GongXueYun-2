@@ -88,7 +88,7 @@ Auto-GongXueYun
 </br>
 2.准备配置文件🤔
 
-如果想同时打卡多个用户,请再添加一个数据体就好了(如果还不理解加我微信（XuanRan_Dev）（记得备注来意）我教你)
+如果想同时打卡多个用户,请再添加一个数据体就好了([如果还不理解点我](https://github.com/XuanRanDev/Auto-GongXueYun/wiki/Auto-GongXueYun))
 
 **注意：配置文件模板下方有配置含义，请务必参照配置含义填写**
 ```json
