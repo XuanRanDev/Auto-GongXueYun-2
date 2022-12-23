@@ -30,3 +30,4 @@ jobs:
         USERS: ${{ secrets.USERS }}
       run: |
         python main.py
+
