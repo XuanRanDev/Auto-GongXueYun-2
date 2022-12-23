@@ -57,12 +57,12 @@ def getSign2(text: str):
 def parseUserInfo():
     allUser = ''
     if os.path.exists(pwd + "user.json"):
+        print("找到配置文件,将从系统环境变量中读取信息！")
         with open(pwd + "user.json", encoding="utf-8") as f:
             lines = f.readlines()
             for line in lines:
                 allUser = allUser + line + '\n'
     else:
-        print("未找到配置文件,将从系统环境变量中读取信息！")
         return json.loads(os.environ.get("USERS", ""))
     return json.loads(allUser)
 
