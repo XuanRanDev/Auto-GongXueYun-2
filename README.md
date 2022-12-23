@@ -107,10 +107,12 @@ Auto-GongXueYun
     "country": "中国",
     "province": "河南省",
     "city": "洛阳市",
+    "area": "新安县",
+    "desc": "打卡备注",
     "type": "android",
     "address": "你的详细地址",
-    "latitude": "33.1000354488",
-    "longitude": "101.57487848",
+    "longitude": "101.987848",
+    "latitude": "33.100038",
     "pushKey": "dhsajifysfsafsdfdsxxxxxx"
   }
 ]
@@ -134,10 +136,12 @@ Auto-GongXueYun
 | country        | 国家                                                         |
 | province       | 省份                                                         |
 | city           | 城市                                                         |
+| area           | 区/县                                                        |
+| desc           | 打卡备注                                                     |
 | type           | android 或 ios                                               |
-| address        | 详细地址，详细地址开头最好加上市，比如说洛阳市西工区xxx街道  |
-| latitude       | 打卡位置纬度,通过坐标拾取来完成(仅需精确到小数点后6位)，[传送门](https://jingweidu.bmcx.com/) |
+| address        | 详细地址，如果你打卡的时候中间带的有·这个符号你也就手动加上，这里填什么，打卡后工学云就会显示你填的内容（工学云默认·这个符号左右都会有一个空格） |
 | longitude      | 打卡位置精度,通过坐标拾取来完成(仅需精确到小数点后6位)，[传送门](https://jingweidu.bmcx.com/) |
+| latitude       | 打卡位置纬度,通过坐标拾取来完成(仅需精确到小数点后6位)，[传送门](https://jingweidu.bmcx.com/) |
 | pushKey        | 打卡结果微信推送，微信推送使用的是pushPlus，请到官网绑定微信([传送门](https://www.pushplus.plus/))，然后在发送消息里面把你的token复制出来粘贴到pushKey这项 |
 
 
