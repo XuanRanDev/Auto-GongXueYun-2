@@ -57,7 +57,7 @@ def getSign2(text: str):
 def parseUserInfo():
     allUser = ''
     if os.path.exists(pwd + "user.json"):
-        print("找到配置文件,将从系统环境变量中读取信息！")
+        print("找到配置文件,将从配置文件读取信息！")
         with open(pwd + "user.json", encoding="utf-8") as f:
             lines = f.readlines()
             for line in lines:
