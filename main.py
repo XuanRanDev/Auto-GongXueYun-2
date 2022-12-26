@@ -81,7 +81,7 @@ def save(user, userId: str, token: str, planId: str, country: str, province: str
         "country": country,
         "address": address,
         "province": province,
-        "city": province,
+        "city": user["city"],
         "area": user["area"],
         "latitude": latitude,
         "description": user["desc"],
