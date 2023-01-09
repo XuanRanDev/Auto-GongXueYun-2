@@ -6,10 +6,9 @@ import sys
 import time
 from hashlib import md5
 
-import pytz
+
 import requests
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad
+from utils import AES,UTC as pytz
 
 import MessagePush
 
@@ -96,9 +95,8 @@ def save(user, userId: str, token: str, planId: str, country: str, province: str
 
 
 def encrypt(key, text):
-    aes = AES.new(key.encode("utf-8"), AES.MODE_ECB)
-    pad_pkcs7 = pad(text.encode('utf-8'), AES.block_size, style='pkcs7')
-    res = aes.encrypt(pad_pkcs7)
+    aes = AES(key.encode("utf-8"))
+    res = aes.encrypt(text.encode('utf-8'))
     msg = res.hex()
     return msg
 
@@ -279,7 +277,7 @@ if __name__ == '__main__':
         except Exception as e:
             print('每日签到检查运行错误！可能与服务器建立连接失败,具体错误原因：' + str(e))
         print('----------------------------每日签到检查完成-----------------------------')
-        sys.exit()
+        # sys.exit()
     for user in users:
         try:
             prepareSign(user)

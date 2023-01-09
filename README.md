@@ -193,12 +193,7 @@ Secret填改好的配置文件
 
 2、在服务器中安装好Python环境。
 
-3、运行命令来下载依赖。
-
-```python
-pip install pytz
-pip install pycryptodome
-```
+~~3、运行命令来下载依赖。~~（已去除pytz和pycryptodome依赖，可直接运行）
 
 4、在百度搜索：你的操作系统+ 定时任务，查看如何创建定时任务。
 
