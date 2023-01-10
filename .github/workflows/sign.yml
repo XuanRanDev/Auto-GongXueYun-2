@@ -19,12 +19,6 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Install depend
-      run: |
-        pip install requests
-        pip install pytz
-        pip install pycryptodome
-
     - name: Start sign
       env:
         USERS: ${{ secrets.USERS }}
