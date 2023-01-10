@@ -18,6 +18,10 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
+        
+    - name: Install depend
+      run: |
+        pip install requests
 
     - name: Start sign
       env:
