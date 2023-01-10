@@ -277,7 +277,7 @@ if __name__ == '__main__':
         except Exception as e:
             print('每日签到检查运行错误！可能与服务器建立连接失败,具体错误原因：' + str(e))
         print('----------------------------每日签到检查完成-----------------------------')
-        # sys.exit()
+        sys.exit()
     for user in users:
         try:
             prepareSign(user)
