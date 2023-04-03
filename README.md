@@ -20,6 +20,9 @@ Auto-GongXueYun
 
 ## 前言
 
+**强烈建议前往Github查看最新代码，Gitee中代码更新不及时![点我](https://github.com/XuanRanDev/Auto-GongXueYun)**
+
+
 **1、请务必认真阅读此文档后继续！**
 
 **2、本项目开源&免费，所有开发均仅限于学习交流，禁止用于任何商业用途。**
