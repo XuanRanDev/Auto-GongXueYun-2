@@ -20,7 +20,15 @@ Auto-GongXueYun
 
 ## 前言
 
-**强烈建议前往Github查看最新代码，Gitee中代码更新不及时[点我](https://github.com/XuanRanDev/Auto-GongXueYun)**
+**仅供学习交流测试！您必须在下载或Fork此源码的24小时内删除所有内容！！**
+
+**仅供学习交流测试！您必须在下载或Fork此源码的24小时内删除所有内容！！**
+
+**仅供学习交流测试！您必须在下载或Fork此源码的24小时内删除所有内容！！**
+
+> 版权所有：
+> 微信：XuanRan_Dev
+> 邮箱：XuanRanDev@qq.com
 
 
 **1、请务必认真阅读此文档后继续！**
