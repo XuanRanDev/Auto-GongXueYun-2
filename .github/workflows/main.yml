@@ -31,4 +31,4 @@ jobs:
       run: |
         python main.py
       env:
-        USERS: ${{ secrets.user.json }}
+        USERS: ${{ secrets.USERS }}
