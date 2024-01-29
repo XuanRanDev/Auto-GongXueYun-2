@@ -1,0 +1,15 @@
+name: 获取和打印 IP 地址
+
+on: 
+  push: #当有代码推送到仓库时触发
+  workflow_dispatch: # 手动触发
+
+jobs:
+  print-ip:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 打印执行时的 IP 地址
+      run: |
+        echo "执行时的 IP 地址是："
+        curl https://ip.sb/ip
