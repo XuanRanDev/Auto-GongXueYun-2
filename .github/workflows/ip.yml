@@ -13,8 +13,4 @@ jobs:
       run: |
         echo "执行时的 IP 地址是："
         cull ip.sb
-        output=$(cull ip.sb 2>&1)
-        echo "$output"
-        if echo "$output" | grep -Fq "404"; then
-          exit 1
-        fi
+
