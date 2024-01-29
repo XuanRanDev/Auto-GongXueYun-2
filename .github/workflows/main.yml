@@ -39,9 +39,9 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: 添加随机延迟(0~1 min)
+    - name: 添加随机延迟(0~5 min)
       run: |
-        N=$((RANDOM % 59 + 2))
+        N=$((RANDOM % 299 + 2))
         for i in $(seq 1 $N); do
           echo "$i"
           sleep 1
