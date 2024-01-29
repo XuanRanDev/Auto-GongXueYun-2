@@ -39,8 +39,12 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: 执行脚本
+    - name: 执行脚本并检测
       run: |
-        python main.py
+        output=$(python main.py)
+        echo "$output"
+        if echo "$output" | grep -Fq "失败"; then
+          exit 1
+        fi
       env:
         USERS: ${{ secrets.USERS }}
