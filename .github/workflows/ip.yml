@@ -12,10 +12,10 @@ jobs:
     - name: 打印执行时的 IP 地址
       run: |
         echo "1"
-        echo output=$(curl https://ip.sb/ip 2>&1)
+        output=$(curl https://ip.sb/ip 2>&1)
         echo "1"
         if echo "$output" | grep -Fq "403"; then
-          echo "网页返回 404 - 找不到页面。"
+          echo "网页返回 403"
           exit 1
         fi
 
