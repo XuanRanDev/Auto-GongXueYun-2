@@ -2,7 +2,7 @@ name: 签到
 
 on:
   schedule:
-    - cron: '50 23 * * *' # 上班打卡 (UTC时间 23+8 相当于7:50)
+    - cron: '50 00 * * *' # 上班打卡 (UTC时间 0+8 相当于8:50)
     - cron: '15 03 * * *' # 每日签到检查，如不需要可删除这行
     - cron: '00 10 * * *' # 下班打卡
     - cron: '15 15 * * *' # 每日签到检查，如不需要可删除这行
@@ -38,6 +38,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: 添加随机延迟(0~5 min)
+      run: sleep $(( RANDOM % 300 ))
 
     - name: 执行脚本并检测
       run: |
