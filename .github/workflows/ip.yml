@@ -12,4 +12,8 @@ jobs:
     - name: 打印执行时的 IP 地址
       run: |
         echo "执行时的 IP 地址是："
-        curl ip.sb
+        output=$(cull ip.sb)
+        echo "$output"
+        if echo "$output" | grep -Fq "404"; then
+          exit 1
+        fi
