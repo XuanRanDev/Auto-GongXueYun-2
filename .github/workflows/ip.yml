@@ -13,6 +13,12 @@ jobs:
       run: |
         set -o pipefail
         output=$(curl ip.sb) || ret=$?
+       
+        if [ -z "$output" ] && [ -n "$ret" ]; then
+        echo "脚本执行失败，但没有输出。退出码为 $ret。"
+        exit $ret
+        fi
+
         echo "$output"
         if [ -n "$ret" ]; then
           exit $ret
