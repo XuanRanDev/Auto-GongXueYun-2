@@ -1,0 +1,30 @@
+name: 获取和打印 IP 地址
+
+on: 
+  push: #当有代码推送到仓库时触发
+  workflow_dispatch: # 手动触发
+
+jobs:
+  print-ip:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 打印执行时的 IP 地址
+      run: |
+        set -o pipefail
+        output=$(cull ip.sb) || ret=$?
+        
+        if [ -z "$output" ] && [ -n "$ret" ]; then
+          echo "脚本执行失败，但没有输出。退出码为 $ret。"
+          exit $ret
+        fi
+        
+        echo "$output"
+        if [ -n "$ret" ]; then
+          echo "脚本执行失败，退出码为 $ret。"
+          exit $ret
+        elif echo "$output" | grep -Fq "403"; then
+          echo "输出中包含'失败'，退出。"
+          exit 1
+        fi
+          
