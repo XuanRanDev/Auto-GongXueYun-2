@@ -12,7 +12,7 @@ jobs:
     - name: 打印执行时的 IP 地址
       run: |
         echo "1"
-        output=$(cull ip.sb 2>&1 || true)
+        output=$(cull ip.sb  || true)
         
         echo "$output"
         if [ $? -ne 0 ]; then
