@@ -62,6 +62,7 @@ jobs:
           exit $ret
         elif echo "$output" | grep -Fq "失败"; then
           exit 1
+          echo "签到或消息推送出了问题"
         fi
       env:
         USERS: ${{ secrets.USERS }}
