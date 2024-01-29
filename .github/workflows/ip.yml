@@ -19,7 +19,7 @@ jobs:
           echo "命令执行出错，错误信息如上所示。"
           exit 1
         fi
-        if echo "$output" | grep -Fq "404"; then
+        if echo "$output" | grep -Fq "403"; then
           echo "网页返回 404 - 找不到页面。"
           exit 1
         fi
