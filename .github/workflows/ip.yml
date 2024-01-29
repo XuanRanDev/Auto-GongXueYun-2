@@ -13,13 +13,8 @@ jobs:
       run: |
         set -o pipefail
         output=$(cull https://ip.sb/ip) || ret=$?
-        
-
-        
         echo "$output"
-        if [ -n "$ret" ]; then
-          echo "脚本执行失败，退出码为 $ret。"
-          exit $ret
+
         elif echo "$output" | grep -Fq "403"; then
           echo "输出中包含'403'，退出。"
           exit 1
