@@ -11,8 +11,9 @@ jobs:
     steps:
     - name: 打印执行时的 IP 地址
       run: |
-        output=$(cull ip.sb 2>&1)
         echo "1"
+        output=$(cull ip.sb 2>&1)
+        
         echo "$output"
         if [ $? -ne 0 ]; then
           echo "命令执行出错，错误信息如上所示。"
