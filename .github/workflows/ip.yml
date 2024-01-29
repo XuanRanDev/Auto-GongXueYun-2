@@ -14,8 +14,9 @@ jobs:
         set -o pipefail
         output=$(cull https://ip.sb/ip) || ret=$?
         echo "$output"
-
-        if echo "$output" | grep -Fq "403"; then
+        if [ -n "$ret" ]; then
+          exit $ret
+        elif echo "$output" | grep -Fq "403"; then
           echo "输出中包含'403'，退出。"
           exit 1
         fi
