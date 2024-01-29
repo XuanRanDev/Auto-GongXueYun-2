@@ -12,4 +12,4 @@ jobs:
     - name: 打印执行时的 IP 地址
       run: |
         echo "执行时的 IP 地址是："
-        curl https://ip.sb/ip
+        curl ip.sb
