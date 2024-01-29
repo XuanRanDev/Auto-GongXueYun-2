@@ -39,9 +39,6 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: 添加随机延迟(0~5 min)
-      run: sleep $(( RANDOM % 60 ))
-
     - name: 执行脚本并检测
       run: |
         set -o pipefail
