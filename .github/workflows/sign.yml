@@ -11,38 +11,48 @@ on:
     - cron: "15 15 * * *" # 每日签到检查，如不需要可删除这行
 
 jobs:
-  build-linux:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 5
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v3
+    - name: 检出代码
+      uses: actions/checkout@v4
+
+    - name: 设置 Python 3.12
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
-    - name: Add conda to system path
+        python-version: '3.12'
+
+    - name: 缓存 Python 依赖
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/pip
+          !~/.cache/pip/log/debug.log
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: 安装依赖
       run: |
-        # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
-    - name: Lint with flake8
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: 执行脚本并检测
       run: |
-        conda install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Install pytz
-      run: |
-        pip install pytz
-      
-    - name: Install Crypto
-      run: |
-        pip install pycryptodome
-    
-    - name: Start sign
+        set -o pipefail
+        output=$(python main.py) || ret=$?
+        
+        if [ -z "$output" ] && [ -n "$ret" ]; then
+        echo "脚本执行失败，但没有输出。退出码为 $ret。"
+        exit $ret
+        fi
+
+        echo "$output"
+        if [ -n "$ret" ]; then
+          exit $ret
+        elif echo "$output" | grep -Fq "失败"; then
+          exit 1
+        fi
       env:
         USERS: ${{ secrets.USERS }}
-      run: |
-        python main.py
