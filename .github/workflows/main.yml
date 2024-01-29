@@ -41,9 +41,12 @@ jobs:
 
     - name: 执行脚本并检测
       run: |
-        output=$(python main.py)
+        set -o pipefail
+        output=$(python main.py) || ret=$?
         echo "$output"
-        if echo "$output" | grep -Fq "失败"; then
+        if [ -n "$ret" ]; then
+          exit $ret
+        elif echo "$output" | grep -Fq "失败"; then
           exit 1
         fi
       env:
