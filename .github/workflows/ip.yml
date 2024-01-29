@@ -12,10 +12,9 @@ jobs:
     - name: 打印执行时的 IP 地址
       run: |
         set -o pipefail
-        output=$(cull ip.sb) || ret=$?
+        output=$(curl ip.sb) || ret=$?
         
         if [ -z "$output" ] && [ -n "$ret" ]; then
-          echo "脚本执行失败，但没有输出。退出码为 $ret。"
           exit $ret
         fi
         
@@ -24,7 +23,7 @@ jobs:
           echo "脚本执行失败，退出码为 $ret。"
           exit $ret
         elif echo "$output" | grep -Fq "403"; then
-          echo "输出中包含'失败'，退出。"
+          echo "输出中包含'403'，退出。"
           exit 1
         fi
           
